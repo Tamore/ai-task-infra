@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: node:20-alpine
+        image: nginx:alpine
         imagePullPolicy: Always
         ports:
         - containerPort: 3000

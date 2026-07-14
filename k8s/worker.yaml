@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: worker
-        image: python:3.9-slim
+        image: nginx:alpine
         imagePullPolicy: Always
         envFrom:
         - configMapRef:
