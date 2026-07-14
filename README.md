@@ -1,38 +1,114 @@
-# AI Task Processing Platform (Infrastructure & GitOps)
+# 🚀 AI Task Processing Platform – Infrastructure & GitOps
 
-This repository contains the Kubernetes manifests and Argo CD configuration for deploying the AI Task Processing Platform.
+This repository contains the Kubernetes infrastructure, deployment manifests, and GitOps configuration for the AI Task Processing Platform.
 
-## Directory Structure
-- `k8s/`: Contains all Kubernetes manifests (Deployments, Services, ConfigMaps, Secrets, Ingress, HPA).
-- `argocd-app.yaml`: The Argo CD Application definition that points to this repository for GitOps auto-sync.
-- `ARCHITECTURE.md`: Detailed architecture design and scalability documentation.
+The infrastructure is designed to deploy the application as a scalable, production-ready Kubernetes workload using Argo CD for continuous delivery and automated synchronization.
 
-## Deployment Instructions
+## 🏗 Infrastructure Components
+
+This repository includes:
+
+- Kubernetes Deployments
+- Services
+- ConfigMaps
+- Secrets
+- Horizontal Pod Autoscalers (HPA)
+- Namespace configuration
+- Argo CD Application manifest
+
+## 📂 Repository Structure
+
+```text
+ai-task-infra/
+├── k8s/
+│   ├── namespace.yaml
+│   ├── configmap.yaml
+│   ├── secret.yaml
+│   ├── backend.yaml
+│   ├── frontend.yaml
+│   ├── worker.yaml
+│   ├── redis.yaml
+│   └── mongo.yaml
+│
+├── argocd-app.yaml
+├── ARCHITECTURE.md
+└── README.md
+```
+
+---
+
+## ☸️ GitOps Deployment Workflow
+
+The deployment follows a GitOps workflow.
+
+```mermaid
+graph TD
+    A[Developer] -->|Push to GitHub| B(GitHub Repository)
+    B -->|Argo CD monitors repository| C{Argo CD}
+    C -->|Detects manifest changes| D[Syncs Kubernetes Cluster]
+    D -->|Application updated| E[(Live Application)]
+```
+
+## 🚀 Deployment
 
 ### Prerequisites
-- A Kubernetes cluster (e.g., Minikube, k3d, Docker Desktop Kubernetes, AWS EKS).
-- `kubectl` installed and configured.
-- Argo CD installed on the cluster.
 
-### 1. Apply Secrets Manually
-Before syncing, ensure your secrets are applied. For local testing, you can apply the provided mock secret:
+- Kubernetes cluster
+  - Minikube
+  - k3d
+  - Docker Desktop Kubernetes
+  - Amazon EKS
+- kubectl
+- Argo CD
+
+### Apply Namespace & Secrets
 ```bash
 kubectl apply -f k8s/namespace.yaml
 kubectl apply -f k8s/secret.yaml
 ```
-*(In production, use external secrets management like HashiCorp Vault or AWS Secrets Manager).*
 
-### 2. Deploy via Argo CD
-1. Edit `argocd-app.yaml` and update the `repoURL` to point to your GitHub fork of this repository.
-2. Apply the Argo CD application manifest:
+### Deploy using Argo CD
 ```bash
 kubectl apply -f argocd-app.yaml
 ```
-3. Argo CD will automatically detect the manifests in the `k8s/` folder and sync them to your cluster.
 
-### 3. Accessing the Application
-Since we use an Ingress resource, ensure your cluster has an Ingress Controller (like Nginx Ingress).
-- Map `localhost` or your cluster IP to access the frontend via port `80`.
+Argo CD will automatically synchronize all manifests inside the `k8s/` directory.
 
-## Scalability
-The Backend and Worker deployments utilize Horizontal Pod Autoscalers (HPA) configured to scale between 2 and 10 replicas based on CPU load (70% utilization), allowing the system to easily handle up to 100,000 tasks/day. See `ARCHITECTURE.md` for more details.
+## 📈 Scaling Strategy
+
+The platform is designed for horizontal scaling.
+
+- Backend replicas: 2–10
+- Worker replicas: 2–10
+- HPA Target CPU: 70%
+- Stateless services
+- Redis message queue
+- MongoDB persistent storage
+
+The architecture is designed to comfortably support workloads approaching 100,000 tasks/day through asynchronous processing and automatic scaling.
+
+## 🔐 Security
+
+The infrastructure follows several production-oriented practices.
+
+- Secrets separated from application configuration
+- ConfigMaps for environment configuration
+- Non-root containers (implemented at image level)
+- Kubernetes namespaces
+- GitOps deployment model
+
+## 📄 Architecture
+
+Detailed design decisions, scaling strategy, queue processing, indexing strategy, and deployment architecture are documented in:
+
+[ARCHITECTURE.md](./ARCHITECTURE.md)
+
+## 🚀 Future Improvements
+
+- KEDA event-driven autoscaling
+- Prometheus monitoring
+- Grafana dashboards
+- Loki centralized logging
+- External Secrets Operator
+- Cert Manager
+- NGINX Ingress Controller
