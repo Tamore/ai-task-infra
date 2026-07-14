@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: worker
-        image: REPLACE_ME_DOCKER_USERNAME/ai-task-worker:latest
+        image: python:3.9-slim
         imagePullPolicy: Always
         envFrom:
         - configMapRef:

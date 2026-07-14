@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: REPLACE_ME_DOCKER_USERNAME/ai-task-backend:latest
+        image: node:20-alpine
         imagePullPolicy: Always
         ports:
         - containerPort: 5000

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: REPLACE_ME_DOCKER_USERNAME/ai-task-frontend:latest
+        image: node:20-alpine
         imagePullPolicy: Always
         ports:
         - containerPort: 3000
