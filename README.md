@@ -31,7 +31,6 @@ ai-task-infra/
 │   └── mongo.yaml
 │
 ├── argocd-app.yaml
-├── ARCHITECTURE.md
 └── README.md
 ```
 
@@ -97,11 +96,7 @@ The infrastructure follows several production-oriented practices.
 - Kubernetes namespaces
 - GitOps deployment model
 
-## 📄 Architecture
 
-Detailed design decisions, scaling strategy, queue processing, indexing strategy, and deployment architecture are documented in:
-
-[ARCHITECTURE.md](./ARCHITECTURE.md)
 
 ## 🚀 Future Improvements
 
